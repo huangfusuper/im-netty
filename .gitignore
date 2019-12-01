@@ -1,0 +1,12 @@
+
+*.iml
+
+/workspace.xml
+/.idea/compiler.xml
+/.idea/misc.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/uiDesigner.xml
+/.idea/vcs.xml
+/.idea/.gitignore
+/.idea/$PRODUCT_WORKSPACE_FILE$
+/target
