@@ -1,4 +1,4 @@
-package com.im.client.login;
+package com.im.client;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
@@ -9,9 +9,9 @@ import io.netty.channel.socket.SocketChannel;
  * @author: huangfu
  * @date: 2019/12/2 13:44
  **/
-public class LoginClientInitializer extends ChannelInitializer<SocketChannel> {
+public class ClientInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
-        socketChannel.pipeline().addLast(new LoginClientHandler());
+        socketChannel.pipeline().addLast(new ClientHandler());
     }
 }

@@ -1,4 +1,4 @@
-package com.im.server.login;
+package com.im.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -8,12 +8,12 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
- * @program: im-netty->LoginServer
+ * @program: im-netty->Server
  * @description: 登陆服务端
  * @author: huangfu
  * @date: 2019/12/2 14:20
  **/
-public class LoginServer {
+public class Server {
     private static final int PORT = 8888;
 
     public static void main(String[] args) {
@@ -29,7 +29,7 @@ public class LoginServer {
                 .childHandler(new ChannelInitializer<SocketChannel>( ) {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        socketChannel.pipeline().addLast(new LoginServerHandel());
+                        socketChannel.pipeline().addLast(new ServerHandel());
                     }
                 });
         bind(serverBootstrap,PORT);

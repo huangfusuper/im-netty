@@ -21,4 +21,6 @@ public abstract class Packet {
      * @return
      */
     public abstract Byte getCommand();
+
+
 }

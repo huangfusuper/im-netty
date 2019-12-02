@@ -1,6 +1,6 @@
 package com.im.utils;
 
-import com.im.protocol.LoginRequestPacket;
+import com.im.protocol.packet.LoginRequestPacket;
 import com.im.protocol.base.Packet;
 import com.im.protocol.enums.Command;
 import com.im.protocol.enums.SerializerAlgorithm;

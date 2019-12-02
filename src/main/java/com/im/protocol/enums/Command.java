@@ -1,12 +1,13 @@
 package com.im.protocol.enums;
 
-import com.im.protocol.LoginRequestPacket;
-import com.im.protocol.LoginResponsePacket;
+import com.im.protocol.packet.LoginRequestPacket;
+import com.im.protocol.packet.LoginResponsePacket;
+import com.im.protocol.packet.MessageRequestPacket;
 import com.im.protocol.base.Packet;
+import com.im.protocol.packet.MessageResponsePacket;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -16,7 +17,9 @@ import java.util.stream.Collectors;
 
 public enum Command {
     LOGIN_REQUEST(Byte.parseByte("1"),LoginRequestPacket.class,"登录请求"),
-    LOGIN_RESPONSE(Byte.parseByte("2"), LoginResponsePacket.class,"登录响应")
+    LOGIN_RESPONSE(Byte.parseByte("2"), LoginResponsePacket.class,"登录响应"),
+    MESSAGE_REQUEST(Byte.parseByte("3"), MessageRequestPacket.class,"发送消息"),
+    MESSAGE_RESPONSE(Byte.parseByte("4"), MessageResponsePacket.class,"发消息对象")
     ;
     private byte commandCode;
     private Class<? extends Packet> packet;
