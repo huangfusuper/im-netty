@@ -1,4 +1,4 @@
-package com.im.testbytebuf;
+package com.im.test.testbytebuf;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
