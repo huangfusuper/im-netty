@@ -1,5 +1,9 @@
 package com.im.server;
 
+import com.im.codec.PacketDecoder;
+import com.im.codec.PacketEncoder;
+import com.im.server.handler.LoginRequestHandler;
+import com.im.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -29,7 +33,13 @@ public class Server {
                 .childHandler(new ChannelInitializer<SocketChannel>( ) {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        socketChannel.pipeline().addLast(new ServerHandel());
+                        //先对字节缓冲进行解码操作
+                        socketChannel.pipeline().addLast(new PacketDecoder());
+                        //进行数据操作
+                        socketChannel.pipeline().addLast(new LoginRequestHandler());
+                        socketChannel.pipeline().addLast(new MessageRequestHandler());
+                        //对处理的数据进行编码操作
+                        socketChannel.pipeline().addLast(new PacketEncoder());
                     }
                 });
         bind(serverBootstrap,PORT);

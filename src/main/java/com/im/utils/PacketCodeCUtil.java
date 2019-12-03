@@ -1,13 +1,10 @@
 package com.im.utils;
 
-import com.im.protocol.packet.LoginRequestPacket;
 import com.im.protocol.base.Packet;
 import com.im.protocol.enums.Command;
 import com.im.protocol.enums.SerializerAlgorithm;
-import com.im.protocol.serializer.JsonSerializer;
 import com.im.protocol.serializer.base.IMSerializer;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 
 /**
  * 编解码工具类
@@ -25,9 +22,9 @@ public class PacketCodeCUtil {
      * @param imSerializer
      * @return
      */
-    public static ByteBuf encode(Packet packet, IMSerializer imSerializer){
+    public static void encode(ByteBuf byteBuf,Packet packet, IMSerializer imSerializer){
         //1.创建ByteBuf对象 分配器 定义一个适合IO的缓冲区
-        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
+        //ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
         //2.序列化JAVA对象
         byte[] serializeObjBuf = imSerializer.serialize(packet);
         // 3. 实际编码过程
@@ -43,7 +40,6 @@ public class PacketCodeCUtil {
         byteBuf.writeInt(serializeObjBuf.length);
         //写入最终数据
         byteBuf.writeBytes(serializeObjBuf);
-        return byteBuf;
     }
 
     public static Packet decode(ByteBuf byteBuf,IMSerializer imSerializer){
@@ -69,14 +65,5 @@ public class PacketCodeCUtil {
             return imSerializer.deserialize(packet,bytes);
         }
         return null;
-    }
-}
-
-
-class Test1{
-    public static void main(String[] args) {
-        ByteBuf encode = PacketCodeCUtil.encode(new LoginRequestPacket("123","123213","123"), new JsonSerializer());
-        Packet decode = PacketCodeCUtil.decode(encode, new JsonSerializer());
-        System.out.println(decode);
     }
 }

@@ -1,16 +1,19 @@
 package com.im.client;
 
 
-import com.im.protocol.packet.MessageRequestPacket;
-import com.im.protocol.serializer.JsonSerializer;
+import com.im.client.handler.LoginResponseHandler;
+import com.im.client.handler.MessageResponseHandler;
+import com.im.codec.PacketDecoder;
+import com.im.codec.PacketEncoder;
+import com.im.protocol.packet.request.MessageRequestPacket;
 import com.im.utils.LoginUtil;
-import com.im.utils.PacketCodeCUtil;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.util.Scanner;
@@ -36,7 +39,17 @@ public class Client {
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,5000)
                 .option(ChannelOption.SO_KEEPALIVE,true)
                 .option(ChannelOption.TCP_NODELAY,true)
-                .handler(new ClientInitializer());
+                .handler(new ChannelInitializer<SocketChannel>( ) {
+                    @Override
+                    protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        socketChannel.pipeline().addLast(new PacketDecoder());
+
+                        socketChannel.pipeline().addLast(new LoginResponseHandler());
+                        socketChannel.pipeline().addLast(new MessageResponseHandler());
+
+                        socketChannel.pipeline().addLast(new PacketEncoder());
+                    }
+                });
 
         connect(bootstrap, HOST, PORT, MAX_RETRY);
 
@@ -73,8 +86,7 @@ public class Client {
                     MessageRequestPacket packet = new MessageRequestPacket();
                     packet.setMessage(line);
 
-                    ByteBuf byteBuf = PacketCodeCUtil.encode(packet, new JsonSerializer( ));
-                    channel.writeAndFlush(byteBuf);
+                    channel.writeAndFlush(packet);
                 }
             }
         }).start();

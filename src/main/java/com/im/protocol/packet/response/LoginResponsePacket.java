@@ -1,4 +1,4 @@
-package com.im.protocol.packet;
+package com.im.protocol.packet.response;
 
 import com.im.protocol.base.Packet;
 import com.im.protocol.enums.Command;

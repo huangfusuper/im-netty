@@ -1,10 +1,10 @@
 package com.im.protocol.enums;
 
-import com.im.protocol.packet.LoginRequestPacket;
-import com.im.protocol.packet.LoginResponsePacket;
-import com.im.protocol.packet.MessageRequestPacket;
+import com.im.protocol.packet.request.LoginRequestPacket;
+import com.im.protocol.packet.response.LoginResponsePacket;
+import com.im.protocol.packet.request.MessageRequestPacket;
 import com.im.protocol.base.Packet;
-import com.im.protocol.packet.MessageResponsePacket;
+import com.im.protocol.packet.response.MessageResponsePacket;
 
 import java.util.Arrays;
 import java.util.List;
