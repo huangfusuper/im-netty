@@ -2,6 +2,7 @@ package com.im.server;
 
 import com.im.codec.PacketDecoder;
 import com.im.codec.PacketEncoder;
+import com.im.protocol.Spliter;
 import com.im.server.handler.LoginRequestHandler;
 import com.im.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -10,6 +11,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 /**
  * @program: im-netty->Server
@@ -33,6 +35,8 @@ public class Server {
                 .childHandler(new ChannelInitializer<SocketChannel>( ) {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        socketChannel.pipeline().addLast(new Spliter());
+
                         //先对字节缓冲进行解码操作
                         socketChannel.pipeline().addLast(new PacketDecoder());
                         //进行数据操作

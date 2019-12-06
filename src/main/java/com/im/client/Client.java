@@ -5,6 +5,7 @@ import com.im.client.handler.LoginResponseHandler;
 import com.im.client.handler.MessageResponseHandler;
 import com.im.codec.PacketDecoder;
 import com.im.codec.PacketEncoder;
+import com.im.protocol.Spliter;
 import com.im.protocol.packet.request.MessageRequestPacket;
 import com.im.utils.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
@@ -15,6 +16,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -42,6 +44,8 @@ public class Client {
                 .handler(new ChannelInitializer<SocketChannel>( ) {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        socketChannel.pipeline().addLast(new Spliter());
+
                         socketChannel.pipeline().addLast(new PacketDecoder());
 
                         socketChannel.pipeline().addLast(new LoginResponseHandler());
