@@ -16,6 +16,8 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class MessageResponsePacket extends Packet {
+    private String userId;
+    private String userName;
     private String message;
     @Override
     public Byte getCommand() {

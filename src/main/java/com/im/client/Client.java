@@ -6,8 +6,10 @@ import com.im.client.handler.MessageResponseHandler;
 import com.im.codec.PacketDecoder;
 import com.im.codec.PacketEncoder;
 import com.im.protocol.Spliter;
+import com.im.protocol.packet.request.LoginRequestPacket;
 import com.im.protocol.packet.request.MessageRequestPacket;
 import com.im.utils.LoginUtil;
+import com.im.utils.UserSessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -80,17 +82,19 @@ public class Client {
     }
 
     private static void startConsoleThread(Channel channel){
+        Scanner sc = new Scanner(System.in);
+        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
         new Thread(() ->{
             while (!Thread.interrupted()){
-                if (LoginUtil.hasLogin(channel)) {
+                if (!UserSessionUtil.hasLogin(channel)) {
                     System.out.println("输入消息发送到客户端..." );
-                    Scanner sc = new Scanner(System.in);
-                    String line = sc.nextLine( );
-
-                    MessageRequestPacket packet = new MessageRequestPacket();
-                    packet.setMessage(line);
-
-                    channel.writeAndFlush(packet);
+                    String userName = sc.nextLine( );
+                    loginRequestPacket.setUserName(userName);
+                    channel.writeAndFlush(loginRequestPacket);
+                }else{
+                    String userId = sc.nextLine();
+                    String message = sc.nextLine();
+                    channel.writeAndFlush(new MessageRequestPacket(userId,message));
                 }
             }
         }).start();

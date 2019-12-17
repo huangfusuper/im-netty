@@ -2,8 +2,7 @@ package com.im.protocol.packet.request;
 
 import com.im.protocol.base.Packet;
 import com.im.protocol.enums.Command;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * @program: im-netty->MessageRequestPacket
@@ -13,7 +12,11 @@ import lombok.EqualsAndHashCode;
  **/
 @Data
 @EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class MessageRequestPacket extends Packet {
+    private String userId;
     private String message;
     @Override
     public Byte getCommand() {

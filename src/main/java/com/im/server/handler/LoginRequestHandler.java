@@ -1,8 +1,10 @@
 package com.im.server.handler;
 
+import com.im.model.UserSession;
 import com.im.protocol.packet.request.LoginRequestPacket;
 import com.im.protocol.packet.response.LoginResponsePacket;
 import com.im.utils.LoginUtil;
+import com.im.utils.UserSessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -19,10 +21,13 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
         LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
         loginResponsePacket.setVersion(loginRequestPacket.getVersion());
+        loginResponsePacket.setUserName(loginRequestPacket.getUserName());
+        loginResponsePacket.setUserId(loginRequestPacket.getUserId());
         //登录校验
         if (valid(loginRequestPacket)) {
+
             loginResponsePacket.setSuccess(true);
-            LoginUtil.markAsLogin(ctx.channel());
+            UserSessionUtil.bindSession(new UserSession(loginRequestPacket.getUserId(),loginRequestPacket.getUserName()),ctx.channel());
         }else{
             loginResponsePacket.setReason("账号密码校验失败");
             loginResponsePacket.setSuccess(false);
@@ -33,6 +38,11 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
     }
     private boolean valid(LoginRequestPacket loginRequestPacket) {
         return true;
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        UserSessionUtil.unBindSession(ctx.channel());
     }
 
 }

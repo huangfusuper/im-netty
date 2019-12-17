@@ -13,6 +13,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class MessageResponseHandler extends SimpleChannelInboundHandler<MessageResponsePacket> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, MessageResponsePacket messageResponsePacket) throws Exception {
-        System.out.println("----【服务端回应】："+messageResponsePacket.getMessage()+"----" );
+        System.out.println(String.format("----【服务端回应】：userId{}--UserName{}:{}",messageResponsePacket.getUserId(),messageResponsePacket.getUserName(),messageResponsePacket.getMessage()) );
     }
 }

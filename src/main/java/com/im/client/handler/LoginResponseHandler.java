@@ -1,8 +1,10 @@
 package com.im.client.handler;
 
+import com.im.model.UserSession;
 import com.im.protocol.packet.request.LoginRequestPacket;
 import com.im.protocol.packet.response.LoginResponsePacket;
 import com.im.utils.LoginUtil;
+import com.im.utils.UserSessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -15,7 +17,7 @@ import java.util.UUID;
  * @date: 2019/12/3 16:05
  **/
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
-    @Override
+    /*@Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("====【客户端发起登陆请求】====" );
         LoginRequestPacket loginResponsePacket = new LoginRequestPacket();
@@ -23,14 +25,16 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
         loginResponsePacket.setUserName("huangFuSuper");
         loginResponsePacket.setPassword("HUANGFUPassword");
         ctx.channel().writeAndFlush(loginResponsePacket);
-    }
+    }*/
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginResponsePacket loginResponsePacket) throws Exception {
+        System.out.println(loginResponsePacket);
         if(loginResponsePacket.isSuccess()){
-            System.out.println("----【登陆成功】----" );
+            System.out.println(String.format("----【登陆成功】,userId:{},UserName:{}----",loginResponsePacket.getUserId(),loginResponsePacket.getUserName() ) );
+
             //客户端通道的登录成功
-            LoginUtil.markAsLogin(channelHandlerContext.channel());
+            UserSessionUtil.bindSession(new UserSession(loginResponsePacket.getUserId(),loginResponsePacket.getUserName()),channelHandlerContext.channel());
         }else{
             System.out.println("----【登陆失败】："+loginResponsePacket.getReason()+"----" );
         }
