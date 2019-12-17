@@ -20,7 +20,7 @@ public class Spliter extends LengthFieldBasedFrameDecoder {
 
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
-        System.out.println(in.getInt(in.readerIndex()) );
+//        System.out.println(in.getInt(in.readerIndex()) )
         //屏蔽魔术   读取一个int从当前的读指针
         if(in.getInt(in.readerIndex()) != PacketCodeCUtil.MAGIC_NUMBER){
             ctx.channel().closeFuture().sync();

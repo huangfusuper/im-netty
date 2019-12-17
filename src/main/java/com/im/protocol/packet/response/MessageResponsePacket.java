@@ -2,7 +2,7 @@ package com.im.protocol.packet.response;
 
 import com.im.protocol.base.Packet;
 import com.im.protocol.enums.Command;
-import lombok.Data;
+import lombok.*;
 
 /**
  * @program: im-netty->MessageResponsePacket
@@ -11,6 +11,10 @@ import lombok.Data;
  * @date: 2019/12/2 16:15
  **/
 @Data
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class MessageResponsePacket extends Packet {
     private String message;
     @Override

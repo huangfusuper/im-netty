@@ -2,12 +2,16 @@ package com.im.protocol.packet.response;
 
 import com.im.protocol.base.Packet;
 import com.im.protocol.enums.Command;
-import lombok.Data;
+import lombok.*;
 
 /**
  * @author huangfu
  */
 @Data
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class LoginResponsePacket extends Packet {
     /**
      * 是否登录成功

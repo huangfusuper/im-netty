@@ -3,6 +3,7 @@ package com.im.protocol.packet.request;
 import com.im.protocol.base.Packet;
 import com.im.protocol.enums.Command;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @program: im-netty->MessageRequestPacket
@@ -11,6 +12,7 @@ import lombok.Data;
  * @date: 2019/12/2 16:11
  **/
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class MessageRequestPacket extends Packet {
     private String message;
     @Override
