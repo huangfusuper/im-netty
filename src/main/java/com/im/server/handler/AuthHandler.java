@@ -1,6 +1,7 @@
 package com.im.server.handler;
 
 import com.im.utils.LoginUtil;
+import com.im.utils.UserSessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -13,8 +14,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 public class AuthHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if(!LoginUtil.hasLogin(ctx.channel())){
-            System.out.println("-------" );
+        if(!UserSessionUtil.hasLogin(ctx.channel())){
+            System.out.println("--------------登录失败，强制关闭通道----------------" );
             ctx.channel().close().sync();
         }else{
             System.out.println("--------登录成功-----" );

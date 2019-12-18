@@ -31,8 +31,7 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, LoginResponsePacket loginResponsePacket) throws Exception {
         System.out.println(loginResponsePacket);
         if(loginResponsePacket.isSuccess()){
-            System.out.println(String.format("----【登陆成功】,userId:{},UserName:{}----",loginResponsePacket.getUserId(),loginResponsePacket.getUserName() ) );
-
+            System.out.println(String.format("----【登陆成功】,userId:%s,UserName:%s----",loginResponsePacket.getUserId(),loginResponsePacket.getUserName() ) );
             //客户端通道的登录成功
             UserSessionUtil.bindSession(new UserSession(loginResponsePacket.getUserId(),loginResponsePacket.getUserName()),channelHandlerContext.channel());
         }else{

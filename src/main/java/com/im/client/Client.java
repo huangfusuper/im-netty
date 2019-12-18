@@ -88,10 +88,18 @@ public class Client {
             while (!Thread.interrupted()){
                 if (!UserSessionUtil.hasLogin(channel)) {
                     System.out.println("输入消息发送到客户端..." );
+                    String userId = sc.nextLine( );
                     String userName = sc.nextLine( );
                     loginRequestPacket.setUserName(userName);
+                    loginRequestPacket.setUserId(userId);
                     channel.writeAndFlush(loginRequestPacket);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace( );
+                    }
                 }else{
+                    System.out.println("输入id和用户名" );
                     String userId = sc.nextLine();
                     String message = sc.nextLine();
                     channel.writeAndFlush(new MessageRequestPacket(userId,message));

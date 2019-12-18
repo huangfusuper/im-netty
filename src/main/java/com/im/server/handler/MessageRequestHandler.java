@@ -21,14 +21,14 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
         messageResponsePacket.setUserId(userSession.getUserId());
         messageResponsePacket.setUserName(userSession.getUserName());
-        messageResponsePacket.setMessage("服务端客户回复【"+messageRequestPacket.getMessage()+"】");
+        messageResponsePacket.setMessage(messageRequestPacket.getMessage());
 
         Channel channel = UserSessionUtil.getChannel(messageRequestPacket.getUserId());
 
         if (channel!=null && UserSessionUtil.hasLogin(channel)) {
             channel.writeAndFlush(messageResponsePacket);
         }else{
-            System.out.println(String.format("{}【不在线】",messageRequestPacket.getUserId()));
+            System.out.println(String.format("%s【不在线】",messageRequestPacket.getUserId()));
         }
         //编码
         ctx.channel().writeAndFlush(messageResponsePacket);
