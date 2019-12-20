@@ -37,7 +37,7 @@ public class Server {
                 .childHandler(new ChannelInitializer<SocketChannel>( ) {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        socketChannel.pipeline().addLast(new LifecycleHandler());
+                        //socketChannel.pipeline().addLast(new LifecycleHandler())
                         socketChannel.pipeline().addLast(new Spliter());
 
                         //先对字节缓冲进行解码操作

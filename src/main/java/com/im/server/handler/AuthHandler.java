@@ -16,7 +16,7 @@ public class AuthHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if(!UserSessionUtil.hasLogin(ctx.channel())){
             System.out.println("--------------登录失败，强制关闭通道----------------" );
-            ctx.channel().close().sync();
+            ctx.channel().close();
         }else{
             System.out.println("--------登录成功-----" );
             //拔掉这个处理器

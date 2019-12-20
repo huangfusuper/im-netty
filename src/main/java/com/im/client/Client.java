@@ -87,11 +87,13 @@ public class Client {
         new Thread(() ->{
             while (!Thread.interrupted()){
                 if (!UserSessionUtil.hasLogin(channel)) {
-                    System.out.println("输入消息发送到客户端..." );
+                    System.out.println("请输入您的用户id:" );
                     String userId = sc.nextLine( );
+                    System.out.println("请输入您的用户名:" );
                     String userName = sc.nextLine( );
                     loginRequestPacket.setUserName(userName);
                     loginRequestPacket.setUserId(userId);
+                    //发送登录请求
                     channel.writeAndFlush(loginRequestPacket);
                     try {
                         Thread.sleep(1000);
@@ -99,8 +101,9 @@ public class Client {
                         e.printStackTrace( );
                     }
                 }else{
-                    System.out.println("输入id和用户名" );
+                    System.out.println("请输入您要发送给谁(用户id)：" );
                     String userId = sc.nextLine();
+                    System.out.println("请输入您要发送的内容:" );
                     String message = sc.nextLine();
                     channel.writeAndFlush(new MessageRequestPacket(userId,message));
                 }
