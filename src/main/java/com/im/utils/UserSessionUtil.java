@@ -4,6 +4,8 @@ import com.im.model.UserSession;
 
 import com.im.protocol.Attributes;
 import io.netty.channel.Channel;
+import io.netty.channel.group.ChannelGroup;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +18,25 @@ public class UserSessionUtil {
      * 这个是userId 对照  channel 对象的载体
      */
     private static final  Map<String, Channel> userIdChannelMap = new HashMap<String,Channel>(10);
+    /**
+     * 创建聊天组
+     */
+    private static final Map<String, ChannelGroup> channelGroupMap = new HashMap<>(15);
+
+    /**
+     * 创建聊天室
+     * @param groupId
+     * @param channels
+     */
+    public static void bindChannelGroup(String groupId,ChannelGroup channels){
+        channelGroupMap.put(groupId,channels);
+    }
+    /**
+     * 获取聊天室
+     */
+    public static ChannelGroup getChannelGroup(String groupId){
+        return channelGroupMap.get(groupId);
+    }
 
     /**
      * 将用户id与管道绑定

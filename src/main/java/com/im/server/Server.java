@@ -3,10 +3,7 @@ package com.im.server;
 import com.im.codec.PacketDecoder;
 import com.im.codec.PacketEncoder;
 import com.im.protocol.Spliter;
-import com.im.server.handler.AuthHandler;
-import com.im.server.handler.LifecycleHandler;
-import com.im.server.handler.LoginRequestHandler;
-import com.im.server.handler.MessageRequestHandler;
+import com.im.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -50,6 +47,8 @@ public class Server {
                          *      所以我们需要使用  pipeline  的热拔插机制，即在AuthHandler内删除这个处理器
                          */
                         socketChannel.pipeline().addLast(new AuthHandler());
+                        //创建聊天组
+                        socketChannel.pipeline().addLast(new CreateGroupRequestHandler());
                         socketChannel.pipeline().addLast(new MessageRequestHandler());
                         //对处理的数据进行编码操作
                         socketChannel.pipeline().addLast(new PacketEncoder());

@@ -1,10 +1,13 @@
 package com.im.client;
 
 
+import com.im.client.handler.CreateGroupResponseHandler;
 import com.im.client.handler.LoginResponseHandler;
 import com.im.client.handler.MessageResponseHandler;
 import com.im.codec.PacketDecoder;
 import com.im.codec.PacketEncoder;
+import com.im.command.impl.ConsoleCommandManager;
+import com.im.command.impl.LoginCommand;
 import com.im.protocol.Spliter;
 import com.im.protocol.packet.request.LoginRequestPacket;
 import com.im.protocol.packet.request.MessageRequestPacket;
@@ -51,6 +54,7 @@ public class Client {
                         socketChannel.pipeline().addLast(new PacketDecoder());
 
                         socketChannel.pipeline().addLast(new LoginResponseHandler());
+                        socketChannel.pipeline().addLast(new CreateGroupResponseHandler());
                         socketChannel.pipeline().addLast(new MessageResponseHandler());
 
                         socketChannel.pipeline().addLast(new PacketEncoder());
@@ -83,29 +87,19 @@ public class Client {
 
     private static void startConsoleThread(Channel channel){
         Scanner sc = new Scanner(System.in);
-        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+        ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
+        LoginCommand loginCommand = new LoginCommand();
         new Thread(() ->{
             while (!Thread.interrupted()){
                 if (!UserSessionUtil.hasLogin(channel)) {
-                    System.out.println("请输入您的用户id:" );
-                    String userId = sc.nextLine( );
-                    System.out.println("请输入您的用户名:" );
-                    String userName = sc.nextLine( );
-                    loginRequestPacket.setUserName(userName);
-                    loginRequestPacket.setUserId(userId);
-                    //发送登录请求
-                    channel.writeAndFlush(loginRequestPacket);
+                    loginCommand.exec(sc,channel);
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace( );
                     }
                 }else{
-                    System.out.println("请输入您要发送给谁(用户id)：" );
-                    String userId = sc.nextLine();
-                    System.out.println("请输入您要发送的内容:" );
-                    String message = sc.nextLine();
-                    channel.writeAndFlush(new MessageRequestPacket(userId,message));
+                    consoleCommandManager.exec(sc,channel);
                 }
             }
         }).start();
