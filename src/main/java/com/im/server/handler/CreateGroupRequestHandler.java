@@ -40,6 +40,6 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
         createGroupResponsePacket.setGroupId(groupId);
         createGroupResponsePacket.setSuccess(true);
         createGroupResponsePacket.setUserNames(userNameList);
-        ctx.channel().writeAndFlush(createGroupResponsePacket);
+        channels.writeAndFlush(createGroupResponsePacket);
     }
 }
