@@ -6,7 +6,9 @@ import com.im.protocol.Attributes;
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,6 +17,10 @@ import java.util.Map;
  */
 public class UserSessionUtil {
     /**
+     * 每一个用户道济加了几个聊天组
+     */
+    private static final Map<String, List<String>> userGroupIds = new HashMap<String, List<String>>(15);
+    /**
      * 这个是userId 对照  channel 对象的载体
      */
     private static final  Map<String, Channel> userIdChannelMap = new HashMap<String,Channel>(10);
@@ -22,6 +28,23 @@ public class UserSessionUtil {
      * 创建聊天组
      */
     private static final Map<String, ChannelGroup> channelGroupMap = new HashMap<>(15);
+    /**
+     * 记录用户添加的群组，或者创建的群组
+     */
+    public static void recordingUserGroup(String userId,String groupId){
+        ChannelGroup channels = channelGroupMap.get(groupId);
+        if(channels!=null){
+            if (userGroupIds.get(userId) != null) {
+                userGroupIds.get(userId).add(groupId);
+            }else{
+                List<String> groups = new ArrayList<>( );
+                groups.add(groupId);
+                userGroupIds.put(userId,groups);
+            }
+        }else{
+            System.out.println("该聊天室不存在！！" );
+        }
+    }
 
     /**
      * 创建聊天室
@@ -83,4 +106,5 @@ public class UserSessionUtil {
     public static boolean hasLogin(Channel channel){
         return channel.hasAttr(Attributes.USER_SESSION);
     }
+
 }

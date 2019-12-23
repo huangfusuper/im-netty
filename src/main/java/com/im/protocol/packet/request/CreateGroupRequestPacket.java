@@ -5,6 +5,7 @@ import com.im.protocol.enums.Command;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 拉去群聊的请求类
@@ -20,5 +21,5 @@ public class CreateGroupRequestPacket extends Packet {
     public Byte getCommand() {
         return Command.CREATE_GROUP_REQUEST.getCommandCode();
     }
-    private List<String> users;
+    private Set<String> users;
 }

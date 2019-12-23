@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 创建聊天室的回应
@@ -19,7 +20,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class CreateGroupResponsePacket extends Packet {
     private boolean isSuccess;
-    private List<String> userNames;
+    private Set<String> userNames;
     private String groupId;
 
     @Override

@@ -10,9 +10,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 新建聊天组
@@ -21,16 +19,18 @@ import java.util.UUID;
 public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, CreateGroupRequestPacket msg) throws Exception {
-        List<String> userNameList = new ArrayList<String>(15);
+        Set<String> userNameList = new HashSet<String>(15);
+        Set<String> userIdList = new HashSet<String>(15);
 
         ChannelGroup channels = new DefaultChannelGroup(ctx.executor());
-        List<String> users = msg.getUsers();
+        Set<String> users = msg.getUsers();
         users.forEach(userId ->{
             Channel userChannel = UserSessionUtil.getChannel(userId);
             if(userChannel!=null){
                 channels.add(userChannel);
                 UserSession userSession = UserSessionUtil.getUserSession(userChannel);
                 userNameList.add(userSession.getUserName());
+                userIdList.add(userSession.getUserId());
             }
 
         });
@@ -41,5 +41,10 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
         createGroupResponsePacket.setSuccess(true);
         createGroupResponsePacket.setUserNames(userNameList);
         channels.writeAndFlush(createGroupResponsePacket);
+
+        //记录用户的聊天组
+        userIdList.forEach(userId ->{
+            UserSessionUtil.recordingUserGroup(userId,groupId);
+        });
     }
 }

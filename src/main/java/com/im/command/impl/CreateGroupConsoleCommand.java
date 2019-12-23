@@ -4,9 +4,7 @@ import com.im.protocol.packet.request.CreateGroupRequestPacket;
 import com.im.command.ConsoleCommand;
 import io.netty.channel.Channel;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author huangfu
@@ -19,7 +17,9 @@ public class CreateGroupConsoleCommand implements ConsoleCommand {
         System.out.print("【拉人群聊】输入 userId 列表，userId 之间英文逗号隔开：");
         String userStr = scanner.nextLine();
         List<String> strings = Arrays.asList(userStr.split(USER_IDS));
-        createGroupRequestPacket.setUsers(strings);
+        Set<String> stringSet = new HashSet<String>(15);
+        stringSet.addAll(strings);
+        createGroupRequestPacket.setUsers(stringSet);
         channel.writeAndFlush(createGroupRequestPacket);
     }
 }
